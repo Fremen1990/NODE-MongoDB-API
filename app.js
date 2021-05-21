@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 // .env config file for API
@@ -8,7 +9,12 @@ dotend.config();
 
 //======================= db connection ==========================
 mongoose
-  .connect(process.env.MONGO_URI, { useUnifiedTopology: true })
+  .connect(process.env.MONGO_URI, {
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+  })
   .then(() => console.log("DB Connected!!! :)"));
 
 // db connection - check if error
@@ -21,9 +27,11 @@ const postRoutes = require("./routes/post");
 
 // ==================== middleware morgan ===========================
 app.use(morgan("dev"));
+
+app.use(bodyParser.json());
 app.use("/", postRoutes);
 
-const port = 7999;
+const port = 8000;
 app.listen(port, () => {
-  console.log(`use local host http://localhost:7999  -  nicly nice`);
+  console.log(`use local host http://localhost:8000  -  nicly nice`);
 });
