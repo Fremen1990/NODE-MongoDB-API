@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const expressValidator = require("express-validator");
 // .env config file for API
 const dotend = require("dotenv");
 dotend.config();
@@ -25,10 +26,10 @@ mongoose.connection.on("error", (err) => {
 // ===================ROUTES from external files======================
 const postRoutes = require("./routes/post");
 
-// ==================== middleware morgan ===========================
+// ==================== Middleware  ===========================
 app.use(morgan("dev"));
-
 app.use(bodyParser.json());
+app.use(expressValidator());
 app.use("/", postRoutes);
 
 const port = 8000;
